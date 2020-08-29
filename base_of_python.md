@@ -184,6 +184,418 @@ print(234444444444444444344444444444433333333333336.3)
 
 
 ```python
+# 字符编码问题，ASCII编码、GB2312编码、UTF-8编码、Unicode编码
+# ASCII是一个字节，Unicode通常是2个字节，一个中文至少两个字节
+# Unicode编码可以解决所有的编码问题，但是如果是英文的用Unicode就浪费空间，UTF-8是可变长的编码。
+# UTF-8编码把一个Unicode字符根据不同的数字大小编码成1-6个字节，常用的英文字母被编码成1个字节，汉字通常是3个字节，
+# 只有很生僻的字符才会被编码成4-6个字节。如果你要传输的文本包含大量英文字符，用UTF-8编码就能节省空间
+# 在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就转换为UTF-8编码。
+# 用记事本编辑的时候，从文件读取的UTF-8字符被转换为Unicode字符到内存里，编辑完成后，保存的时候再把Unicode转换为UTF-8保存到文件
+# python3中是使用unicode编码的，支持多语言
+print('包含中文的字符串str')
+# ord()函数获取字符的整数表示，chr()将编码转成对应的字符
+print(ord('中'))# 输出的结果为20013
+print(chr(ord('中')))
+print(ord('文'))# 25991
+print(chr(25991))
+
+print('\u4e2d')# 中
+print('\u6587') # 文
+
+# python中，bytes类型在前面用前缀b表示,bytes的每个字符只占用一个字节
+print('ABC')
+print(b'ABC')
+print(ord('B'))
+print(type(b'ABC'))
+```
+
+    包含中文的字符串str
+    20013
+    中
+    25991
+    文
+    中
+    文
+    ABC
+    b'ABC'
+    66
+    <class 'bytes'>
+
+
+
+```python
+# encode()和decode()进行编解码,通过encode编码后就将字符串变成了bytes类型了,在python中无法显示为ASCII字符的字节，用\x##表示
+print('ABC'.encode('ascii'))
+print('你好'.encode('utf-8'))
+# 解码
+print(b'\xe4\xbd\xa0\xe5\xa5\xbd'.decode('utf-8'))
+print(b'\xe4\xbd\xa0\xe5\xa5\xbd')
+# print(b'\xe4'.decode('utf-8')) # 无法解码，会报错
+# 使用ignore对小部分错误进行忽略
+# print(b'中') # bytes can only contain ASCII literal characters
+# print(b'\xe4\xb8\xad\xff'.decode('utf-8'))
+print(b'\xe4\xb8\xad\xff'.decode('utf-8',errors='ignore'))
+# 在编写代码时，如果包含了中文，一定要使用中文编码，并且在另存为进行保存的时候也一定要使用utf-8进行保存  
+# #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
+# 格式化 在python中使用%的方式进行格式化，也可以使用format()函数进行格式化,里面使用{0} {1}等进行占位
+# 在字符串内部,%s表示字符串替换，%d表示整数替换,%f表示浮点数，%x表示十六进制数，%?表示占位的意思，如果只有一个占位，括号可以不用写
+# 如果%是一个普通字符，需要使用%%来进行转义 
+print('Hello,%s!' % 'zhangsan')
+print('hello,%s,your age is %d? your height is %f ?' % ('zhangsan',18,173.5))# 默认保留小数点后6位
+
+print('Hello,{0},your age is {1}? your height is {2:.6f} ?'.format('zhangsan',18,173.5))
+```
+
+    b'ABC'
+    b'\xe4\xbd\xa0\xe5\xa5\xbd'
+    你好
+    b'\xe4\xbd\xa0\xe5\xa5\xbd'
+    中
+    Hello,zhangsan!
+    hello,zhangsan,your age is 18? your height is 173.500000 ?
+    Hello,zhangsan,your age is 18? your height is 173.500000 ?
+
+
+
+```python
+# list list中可以允许重复,可以存储不同类型的值，可以存list等复杂类型的元素,并且保留了存入的先后顺序了的
+name=['zhangsan','lisi','wangwu','zhangsan']
+print(name)
+# 创建一个空列表并添加元素,需要注意的是append()方法返回的是None类型的object,append是将元素追加到列表末尾
+names = []
+names.append('zhangsan')
+names.append('lisi')
+names.append('wangwu')
+names.append('zhangsan')
+print(names)
+print(name == names) # True，在python中==是比较值大小，如果相同则为真
+# print(name.length()) # 报错
+print(len(name))
+print('---------取值------------')
+# 根据index取值
+print(name[0])
+# 取最后一个元素，有如下写法：-1默认是取一个列表的最后一个元素,整数是从前向后取，并且从0开始，负数是从后向前取，并且是从-1开始
+print(name[-1])
+print(name[len(name)-1])
+# 取倒数第二个数
+print('倒数第二个数:',name[-2])
+print('-------------插入元素到指定位置----------')
+print(name.insert(3,'Mike'))
+name.insert(0,'ligang')
+print(name)
+print('-------------使用pop删除元素,pop()方法会将被弹出的元素作为值返回----------')
+print('删除最后一个元素，最后一个元素是:',name.pop())
+print(name)
+name.pop(0)
+print(name)
+print('--------存入一个复合元素--------------')
+
+mingxing=['huangxiaoming','fanbingbing','licheng']
+name.insert(2,mingxing)
+print(name)
+# 在name中获取mingxing中的第二个元素
+print('mingxing中第二个元素为:',name[2][1])
+print('--------遍历--------------')
+#遍历列表
+for a in name:
+    print(a)
+# for i in 0  len(name):
+#     print(name[i])
+    
+```
+
+    ['zhangsan', 'lisi', 'wangwu', 'zhangsan']
+    ['zhangsan', 'lisi', 'wangwu', 'zhangsan']
+    True
+    4
+    ---------取值------------
+    zhangsan
+    zhangsan
+    zhangsan
+    倒数第二个数: wangwu
+    -------------插入元素到指定位置----------
+    None
+    ['ligang', 'zhangsan', 'lisi', 'wangwu', 'Mike', 'zhangsan']
+    -------------使用pop删除元素,pop()方法会将被弹出的元素作为值返回----------
+    删除最后一个元素，最后一个元素是: zhangsan
+    ['ligang', 'zhangsan', 'lisi', 'wangwu', 'Mike']
+    ['zhangsan', 'lisi', 'wangwu', 'Mike']
+    --------存入一个复合元素--------------
+    ['zhangsan', 'lisi', ['huangxiaoming', 'fanbingbing', 'licheng'], 'wangwu', 'Mike']
+    mingxing中第二个元素为: fanbingbing
+    --------遍历--------------
+    zhangsan
+    lisi
+    ['huangxiaoming', 'fanbingbing', 'licheng']
+    wangwu
+    Mike
+
+
+
+```python
+# 元祖 tuple，使用需要被初始化，并且一旦被初始化后就不能修改，是一种有顺序的列表
+zs=('zhangsan',23,176.23,'上海')
+print('zs的几个元素分别是，第一个:%s,第二个:%d,第三个:%.3f,四:%s' % (zs[0],zs[1],zs[2],zs[3]))
+print('空tuple:',())
+# 需要注意的是，如果只有一个元素的元祖时，一定要在元素后面添加,以跟运算符(1)进行区分
+print('1元祖',(23,))
+print('--------元祖中存入复合元素--------------')
+# 需要注意的是，元祖中的元素不可变是指引用的内存的地址不可变（指向不可变），但是如果元祖中存储的数复合元素比如列表时，是可以修改这个复合元素中的内容的，不过此时复合元素引用的内存地址是没有变化的
+kebian=('1','A',['zs','lis'])
+print(kebian)
+kebian[2][1]='zhangsan'
+print(kebian)
+```
+
+    zs的几个元素分别是，第一个:zhangsan,第二个:23,第三个:176.230,四:上海
+    空tuple: ()
+    1元祖 (23,)
+    --------元祖中存入复合元素--------------
+    ('1', 'A', ['zs', 'lis'])
+    ('1', 'A', ['zs', 'zhangsan'])
+
+
+
+```python
+# 条件判断
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
 
 ```
 
