@@ -361,6 +361,60 @@ print(kebian)
 
 ```python
 # 条件判断
+age = 90
+if age > 80:
+    print("older")
+elif age> 18:
+    print("adult")
+elif age >= 6:
+    print("teenager")
+else:
+    print("baby")
+    
+    
+a=int(input('year:'))
+if a > 2000:
+    print("00后")
+elif a> 1990:
+    print("90后")
+elif a > 1980:
+    print("80后")
+else:
+    print("其他")
+```
+
+    older
+    year:2010
+    00后
+
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
 
 ```
 
